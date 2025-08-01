@@ -37,8 +37,8 @@ def wl_node_coloring(graph, max_iter=5):
         # Build the initial color based on node properties like type, attack and protocol
         node_type = graph.nodes[node].get('type', 'generic')
         attack_type = graph.nodes[node].get('attack_type', '0')
-        protocol = graph.nodes[node].get('r1_Protocollo', 'Unknown')
-        flow_duration = graph.nodes[node].get('r1_DurataFlusso', 0)
+        protocol = graph.nodes[node].get('r1_Protocol', 'Unknown')
+        flow_duration = graph.nodes[node].get('r1_FlowDuration', 0)
 
         # Define the initial node color based on its properties
         node_color_dict[node] = f"{node_type}_{attack_type}_{protocol}_{flow_duration}"
@@ -99,8 +99,8 @@ class DatasetLoader:
                     S[nodes.index(v), nodes.index(u)] = 1
 
             # Add score based on protocol
-            if 'r1_Protocollo' in self.graph.nodes[u] and 'r1_Protocollo' in self.graph.nodes[v]:
-                if self.graph.nodes[u]['r1_Protocollo'] == self.graph.nodes[v]['r1_Protocollo']:
+            if 'r1_Protocol' in self.graph.nodes[u] and 'r1_Protocol' in self.graph.nodes[v]:
+                if self.graph.nodes[u]['r1_Protocol'] == self.graph.nodes[v]['r1_Protocol']:
                     S[nodes.index(u), nodes.index(v)] += 0.5
 
             # Add score based on received payload size
