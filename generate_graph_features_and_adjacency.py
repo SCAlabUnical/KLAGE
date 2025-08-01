@@ -29,8 +29,8 @@ services = []
 for entry in json_data:
     if 'at' in entry:
         attack_types.append(entry['at']['properties'].get('Attack_type', 'Unknown'))
-    protocols.append(entry['r1']['properties'].get('Protocollo', 'Unknown'))
-    services.append(entry['r2']['properties'].get('Servizio', 'Unknown'))
+    protocols.append(entry['r1']['properties'].get('Protocol', 'Unknown'))
+    services.append(entry['r2']['properties'].get('Service', 'Unknown'))
 
 # Apply Label Encoding to attack types, protocols, and services
 label_encoder_attack = LabelEncoder()
@@ -66,7 +66,7 @@ for entry in json_data:
     r2_properties = entry['r2']['properties']  # r2 properties for the attack node
 
     # Encode the protocol
-    protocol = r1_properties.get('Protocollo', 'Unknown')
+    protocol = r1_properties.get('Protocol', 'Unknown')
     encoded_protocol = protocol_mapping.get(protocol, -1)
 
     # Encode the attack type to keep track of the count
@@ -85,10 +85,10 @@ for entry in json_data:
     if source_node not in node_features:
         source_feats = [
             -1,  # Source identifier
-            float(source_properties.get('Totale_dati_inviati', 0)),
-            float(source_properties.get('Porta_origine', 0)),
-            float(source_properties.get('Pacchetti_inviati', 0)),
-            float(r1_properties.get('DurataFlusso', 0)),
+            float(source_properties.get('Total_data_sent', 0)),
+            float(source_properties.get('Source_port', 0)),
+            float(source_properties.get('Packets_sent', 0)),
+            float(r1_properties.get('FlowDuration', 0)),
             float(r1_properties.get('PayloadDimensionSend', 0)),
             float(r1_properties.get('PktReceiveInterval', 0)),
             float(encoded_protocol),
@@ -96,13 +96,15 @@ for entry in json_data:
             float(r1_properties.get('PktSendInterval', 0)),
             float(r1_properties.get('PayloadDimensionReceive', 0)),
             float(r1_properties.get('FrequencyReceive', 0))
+
         ]
 
         # Add destination (dp) features to the source node (sp) without the attack type
         source_feats.extend([
-            float(dest_properties.get('Totale_dati_ricevuti', 0)),
-            float(dest_properties.get('Porta_destinazione', 0)),
-            float(dest_properties.get('Pacchetti_ricevuti', 0))
+        float(dest_properties.get('Total_data_received', 0)),
+        float(dest_properties.get('Destination_port', 0)),
+        float(dest_properties.get('Packets_received', 0))
+
         ])
 
         # Add padding to ensure all features have the same length
@@ -113,17 +115,18 @@ for entry in json_data:
     if dest_node not in node_features:
         dest_feats = [
             -2,  # Destination identifier
-            float(dest_properties.get('Totale_dati_ricevuti', 0)),
-            float(dest_properties.get('Porta_destinazione', 0)),
-            float(dest_properties.get('Pacchetti_ricevuti', 0)),
-            float(r1_properties.get('DurataFlusso', 0)),
-            float(r1_properties.get('PayloadDimensionSend', 0)),
-            float(r1_properties.get('PktReceiveInterval', 0)),
+            float(dest_properties.get('Total_data_received', 0)),
+            float(dest_properties.get('Destination_port', 0)),
+            float(dest_properties.get('Packets_received', 0)),
+            float(r1_properties.get('Flow_duration', 0)),
+            float(r1_properties.get('Payload_size_send', 0)),
+            float(r1_properties.get('Pkt_receive_interval', 0)),
             float(encoded_protocol),
-            float(r1_properties.get('FrequencySend', 0)),
-            float(r1_properties.get('PktSendInterval', 0)),
-            float(r1_properties.get('PayloadDimensionReceive', 0)),
-            float(r1_properties.get('FrequencyReceive', 0))
+            float(r1_properties.get('Send_frequency', 0)),
+            float(r1_properties.get('Pkt_send_interval', 0)),
+            float(r1_properties.get('Payload_size_receive', 0)),
+            float(r1_properties.get('Receive_frequency', 0))
+
         ]
 
         # Add padding to normalize feature length
