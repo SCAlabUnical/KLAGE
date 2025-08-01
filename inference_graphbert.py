@@ -130,17 +130,18 @@ def decode_protocol_service(node_features, attack_node_features):
 def extract_sp_features(node_features):
     # Create a dictionary with relevant features from sp node
     features = {
-        'Totale_dati_inviati': node_features[1],
-        'Pacchetti_inviati': node_features[3],
-        'DurataFlusso': node_features[4],
-        'PayloadDimensionSend': node_features[5],
-        'PktReceiveInterval': node_features[6],
-        'FrequencySend': node_features[8],
-        'PktSendInterval': node_features[9],
-        'PayloadDimensionReceive': node_features[10],
-        'FrequencyReceive': node_features[11],
-        'Totale_dati_ricevuti': node_features[12],
-        'Pacchetti_ricevuti': node_features[14]
+        'Total_data_sent': node_features[1],
+        'Packets_sent': node_features[3],
+        'Flow_duration': node_features[4],
+        'Payload_size_send': node_features[5],
+        'Pkt_receive_interval': node_features[6],
+        'Send_frequency': node_features[8],
+        'Pkt_send_interval': node_features[9],
+        'Payload_size_receive': node_features[10],
+        'Receive_frequency': node_features[11],
+        'Total_data_received': node_features[12],
+        'Packets_received': node_features[14]
+
     }
     return features
 
@@ -216,51 +217,55 @@ for i, pred_class in enumerate(predicted_classes_filtered):
         correct += 1
         # Add correct prediction to the list
         correct_predictions.append({
-            'Porta Origine': source_ports_filtered[i],
-            'Porta Destinazione': destination_ports_filtered[i],
-            'Protocollo': sp_protocol,
-            'Servizio': sp_service,
-            'Tipo Attacco': attack_type_str,
-            'Sottoclasse': subclass,
+
+            'Source_port': source_ports_filtered[i],
+            'Destination_port': destination_ports_filtered[i],
+            'Protocol': sp_protocol,
+            'Service': sp_service,
+            'Attack_type': attack_type_str,
+            'Subclass': subclass,
             'Scenario': scenario,
-            'Vettore Attacco': attack_vector,
-            'Totale_dati_inviati': sp_features['Totale_dati_inviati'],
-            'Pacchetti_inviati': sp_features['Pacchetti_inviati'],
-            'DurataFlusso': sp_features['DurataFlusso'],
-            'PayloadDimensionSend': sp_features['PayloadDimensionSend'],
-            'PktReceiveInterval': sp_features['PktReceiveInterval'],
-            'FrequencySend': sp_features['FrequencySend'],
-            'PktSendInterval': sp_features['PktSendInterval'],
-            'PayloadDimensionReceive': sp_features['PayloadDimensionReceive'],
-            'FrequencyReceive': sp_features['FrequencyReceive'],
-            'Totale_dati_ricevuti': sp_features['Totale_dati_ricevuti'],
-            'Pacchetti_ricevuti': sp_features['Pacchetti_ricevuti'],
+            'Attack_vector': attack_vector,
+            'Total_data_sent': sp_features['Total_data_sent'],
+            'Packets_sent': sp_features['Packets_sent'],
+            'Flow_duration': sp_features['Flow_duration'],
+            'Payload_size_send': sp_features['Payload_size_send'],
+            'Pkt_receive_interval': sp_features['Pkt_receive_interval'],
+            'Send_frequency': sp_features['Send_frequency'],
+            'Pkt_send_interval': sp_features['Pkt_send_interval'],
+            'Payload_size_receive': sp_features['Payload_size_receive'],
+            'Receive_frequency': sp_features['Receive_frequency'],
+            'Total_data_received': sp_features['Total_data_received'],
+            'Packets_received': sp_features['Packets_received'],
             'Status': status
+
+
         })
     else:
         status = "incorrect"
         # Add discrepancy to the list
         discrepancies.append({
-            'Porta Origine': source_ports_filtered[i],
-            'Porta Destinazione': destination_ports_filtered[i],
-            'Protocollo': sp_protocol,
-            'Servizio': sp_service,
-            'Tipo Attacco': attack_type_str,
-            'Sottoclasse': subclass,
+            'Source_port': source_ports_filtered[i],
+            'Destination_port': destination_ports_filtered[i],
+            'Protocol': sp_protocol,
+            'Service': sp_service,
+            'Attack_type': attack_type_str,
+            'Subclass': subclass,
             'Scenario': scenario,
-            'Vettore Attacco': attack_vector,
-            'Totale_dati_inviati': sp_features['Totale_dati_inviati'],
-            'Pacchetti_inviati': sp_features['Pacchetti_inviati'],
-            'DurataFlusso': sp_features['DurataFlusso'],
-            'PayloadDimensionSend': sp_features['PayloadDimensionSend'],
-            'PktReceiveInterval': sp_features['PktReceiveInterval'],
-            'FrequencySend': sp_features['FrequencySend'],
-            'PktSendInterval': sp_features['PktSendInterval'],
-            'PayloadDimensionReceive': sp_features['PayloadDimensionReceive'],
-            'FrequencyReceive': sp_features['FrequencyReceive'],
-            'Totale_dati_ricevuti': sp_features['Totale_dati_ricevuti'],
-            'Pacchetti_ricevuti': sp_features['Pacchetti_ricevuti'],
+            'Attack_vector': attack_vector,
+            'Total_data_sent': sp_features['Total_data_sent'],
+            'Packets_sent': sp_features['Packets_sent'],
+            'Flow_duration': sp_features['Flow_duration'],
+            'Payload_size_send': sp_features['Payload_size_send'],
+            'Pkt_receive_interval': sp_features['Pkt_receive_interval'],
+            'Send_frequency': sp_features['Send_frequency'],
+            'Pkt_send_interval': sp_features['Pkt_send_interval'],
+            'Payload_size_receive': sp_features['Payload_size_receive'],
+            'Receive_frequency': sp_features['Receive_frequency'],
+            'Total_data_received': sp_features['Total_data_received'],
+            'Packets_received': sp_features['Packets_received'],
             'Status': status
+
         })
 
 # Calculate total prediction accuracy
@@ -270,10 +275,10 @@ print(f"Total accuracy compared to actual data: {accuracy:.2f}%")
 
 # Save all connections to a CSV file for evaluation
 with open(csv_output_path, mode='w', newline='') as file:
-    fieldnames = ['Porta Origine', 'Porta Destinazione', 'Protocollo', 'Servizio', 'Tipo Attacco', 'Sottoclasse', 'Scenario',
-                  'Vettore Attacco', 'Totale_dati_inviati', 'Pacchetti_inviati', 'DurataFlusso', 'PayloadDimensionSend',
-                  'PktReceiveInterval', 'FrequencySend', 'PktSendInterval', 'PayloadDimensionReceive', 'FrequencyReceive',
-                  'Totale_dati_ricevuti', 'Pacchetti_ricevuti', 'Status']
+fieldnames = ['Source_port', 'Destination_port', 'Protocol', 'Service', 'Attack_type', 'Subclass', 'Scenario',
+              'Attack_vector', 'Total_data_sent', 'Packets_sent', 'Flow_duration', 'Payload_size_send',
+              'Pkt_receive_interval', 'Send_frequency', 'Pkt_send_interval', 'Payload_size_receive', 'Receive_frequency',
+              'Total_data_received', 'Packets_received', 'Status']
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()  # Write header to CSV file
 
